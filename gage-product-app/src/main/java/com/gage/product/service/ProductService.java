@@ -5,8 +5,8 @@ import reactor.core.publisher.Mono;
 
 public interface ProductService {
 
-    ProductDTO getProduct(int productId);
-    ProductDTO createProduct(ProductDTO product);
-    void deleteProduct(int productId);
+    Mono<ProductDTO> getProduct(int productId);
+    Mono<ProductDTO> createProduct(ProductDTO product);
+    Mono<Void> deleteProduct(int productId);
 
 }

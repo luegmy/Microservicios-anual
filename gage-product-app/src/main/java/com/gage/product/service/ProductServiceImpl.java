@@ -30,40 +30,28 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDTO getProduct(int productId) {
+    public Mono<ProductDTO> getProduct(int productId) {
         LOG.debug("/product return the found product for productId={}", productId);
         if (productId < 1) throw new InvalidInputException("Invalid productId: " + productId);
-
-        ProductEntity entity = productRepository.findByProductId(productId)
-                .orElseThrow(() -> new NotFoundException("No product found for productId: " + productId));
-
-        ProductDTO response = productMapper.entityToDto(entity);
-        response.setServiceAddress(serviceUtil.getServiceAddress());
-
-        LOG.debug("getProduct: found productId: {}", response.getProductId());
-
-        return response;
+        return productRepository.findByProductId(productId)
+                .switchIfEmpty(Mono.error(new NotFoundException("No product found for productId: " + productId)))
+                .map(productMapper::entityToDto);
     }
 
     @Override
-    public ProductDTO createProduct(ProductDTO productDTO) {
-        try {
-            ProductEntity entity = productMapper.dtoToEntity(productDTO);
-            ProductEntity newEntity = productRepository.save(entity);
-
-            LOG.debug("createProduct: entity created for productId: {}", productDTO.getProductId());
-            return productMapper.entityToDto(newEntity);
-
-        } catch (DuplicateKeyException dke) {
-            throw new InvalidInputException("Duplicate key, Product Id: " + productDTO.getProductId());
-        }
+    public Mono<ProductDTO> createProduct(ProductDTO productDTO) {
+        LOG.debug("createProduct: entity created for productId: {}", productDTO.getProductId());
+        ProductEntity entity = productMapper.dtoToEntity(productDTO);
+        return productRepository.save(entity)
+                .onErrorMap(
+                        DuplicateKeyException.class,
+                        ex -> new InvalidInputException("Duplicate key, Product Id: " + productDTO.getProductId()))
+                .map(productMapper::entityToDto);
     }
 
     @Override
-    public void deleteProduct(int productId) {
+    public Mono<Void> deleteProduct(int productId) {
         LOG.debug("deleteProduct: tries to delete an entity with productId: {}", productId);
-        productRepository.findByProductId(productId).ifPresent(productRepository::delete);
-
-
+        return productRepository.findByProductId(productId).map(productRepository::delete).then();
     }
 }

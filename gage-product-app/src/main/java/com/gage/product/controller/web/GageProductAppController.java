@@ -17,7 +17,7 @@ public class GageProductAppController {
     @GetMapping(
             value    = "/product/{productId}",
             produces = "application/json")
-    ProductDTO getProduct(@PathVariable int productId){
+    Mono<ProductDTO> getProduct(@PathVariable int productId){
        return productService.getProduct(productId);
     }
 
@@ -25,12 +25,12 @@ public class GageProductAppController {
             value    = "/product",
             consumes = "application/json",
             produces = "application/json")
-    ProductDTO createProduct(@RequestBody ProductDTO body){
+    Mono<ProductDTO> createProduct(@RequestBody ProductDTO body){
         return productService.createProduct(body);
     }
 
     @DeleteMapping(value = "/product/{productId}")
-    void deleteProduct(@PathVariable int productId){
-         productService.deleteProduct(productId);
+    Mono<Void> deleteProduct(@PathVariable int productId){
+         return productService.deleteProduct(productId);
     }
 }
