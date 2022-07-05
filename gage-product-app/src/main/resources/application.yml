@@ -1,0 +1,15 @@
+server.port: 7001
+server.error.include-message: always
+
+spring.data.mongodb:
+  #host: mongodb
+  host: localhost
+  port: 27017
+  database: product-db
+
+logging:
+  level:
+    root: INFO
+    com.gage.product: DEBUG
+
+

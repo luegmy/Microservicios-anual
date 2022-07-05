@@ -1,0 +1,31 @@
+version: '3.7'
+
+services:
+  product-service:
+    build: ./gage-product-app
+    mem_limit: 350m
+    ports:
+    - "7001:7001"
+    container_name: product-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    links:
+      - mongodb
+      - rabbitmq
+
+  # $ mongo
+  mongodb:
+    image: mongo:5.0
+    mem_limit: 350m
+    ports:
+      - "27017:27017"
+    container_name: my-mongo
+
+  rabbitmq:
+    image: rabbitmq:3.10.5-management
+    mem_limit: 350m
+    ports:
+      - 5672:5672
+      - 15672:15672
+    container_name: my-rabbitmq
+
