@@ -20,6 +20,7 @@
         <artifactId>gage-product-repository</artifactId>
     </dependency>
 
+
 </dependencies>
     <build>
         <plugins>

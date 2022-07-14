@@ -1,5 +1,8 @@
 package com.gage.product.dto;
 
+import lombok.ToString;
+
+@ToString
 public class ProductDTO {
     private int productId;
     private String name;
@@ -20,6 +23,7 @@ public class ProductDTO {
         this.serviceAddress = serviceAddress;
     }
 
+    
     public int getProductId() {
         return productId;
     }

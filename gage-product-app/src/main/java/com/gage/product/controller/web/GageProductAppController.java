@@ -2,6 +2,7 @@ package com.gage.product.controller.web;
 
 import com.gage.product.dto.ProductDTO;
 import com.gage.product.service.ProductService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -25,8 +26,10 @@ public class GageProductAppController {
             value    = "/product",
             consumes = "application/json",
             produces = "application/json")
-    Mono<ProductDTO> createProduct(@RequestBody ProductDTO body){
-        return productService.createProduct(body);
+    ResponseEntity createProduct(@RequestBody ProductDTO body){
+        productService.createProduct(body);
+        return ResponseEntity.accepted().build();
+
     }
 
     @DeleteMapping(value = "/product/{productId}")

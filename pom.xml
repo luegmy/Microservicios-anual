@@ -103,6 +103,13 @@
             <version>3.4.6</version>
             <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-stream-rabbit -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-stream-rabbit</artifactId>
+            <version>3.2.4</version>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>

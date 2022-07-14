@@ -9,10 +9,10 @@ import com.gage.product.exception.NotFoundException;
 import com.gage.product.http.ServiceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
-
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -23,7 +23,8 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
 
-    public ProductServiceImpl(ServiceUtil serviceUtil, ProductRepository productRepository, ProductMapper productMapper) {
+    public ProductServiceImpl(ServiceUtil serviceUtil, ProductRepository productRepository,
+                              ProductMapper productMapper) {
         this.serviceUtil = serviceUtil;
         this.productRepository = productRepository;
         this.productMapper = productMapper;
@@ -47,6 +48,7 @@ public class ProductServiceImpl implements ProductService {
                         DuplicateKeyException.class,
                         ex -> new InvalidInputException("Duplicate key, Product Id: " + productDTO.getProductId()))
                 .map(productMapper::entityToDto);
+
     }
 
     @Override

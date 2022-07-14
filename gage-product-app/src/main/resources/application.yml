@@ -6,6 +6,27 @@ spring.data.mongodb:
   host: localhost
   port: 27017
   database: product-db
+#Declaramos que RabbitMQ es el sistema de mensajería predeterminado y
+#que el tipo de contenido predeterminado es JSON:
+spring.cloud.stream:
+  defaultBinder: rabbit
+  default.contentType: application/json
+# vinculamos nuestros canales de salida a nombres de temas específicos
+  bindings:
+    input:
+      destination: products
+      group: productsGroup
+
+#declaramos información de conectividad para Kafka y RabbitMQ:
+spring.cloud.stream.kafka.binder:
+  brokers: 127.0.0.1
+  defaultBrokerPort: 9092
+
+spring.rabbitmq:
+  host: 127.0.0.1
+  port: 5672
+  username: guest
+  password: guest
 
 logging:
   level:
